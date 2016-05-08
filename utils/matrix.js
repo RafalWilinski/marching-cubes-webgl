@@ -1,3 +1,5 @@
+import { Matrix, Vector } from 'sylvester';
+
 export const loadIdentity = () => {
   mvMatrix = Matrix.I(4);
 };
@@ -7,7 +9,7 @@ export const multMatrix = (m) => {
 };
 
 export const mvTranslate = (v) => {
-  multMatrix(Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4());
+  multMatrix(Matrix.Translation(Vector([v[0], v[1], v[2]])).ensure4x4());
 };
 
 export const setMatrixUniforms = (gl, shaderProgram, perspectiveMatrix) => {
