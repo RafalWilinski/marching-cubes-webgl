@@ -1,5 +1,9 @@
 var canvas;
 var gl;
+var fps;
+var elapsedTime = 0;
+var frameCount = 0;
+var lastTime = 0;
 
 var cubeRotation = 0.0;
 var lastCubeUpdateTime = 0;
@@ -28,10 +32,12 @@ function start() {
     gl.depthFunc(gl.LEQUAL);
 
     initShaders();
-    initBuffers();
     initTextures();
-    setInterval(drawScene, 15);
+    setInterval(drawScene, 16.6);
+
+    new Chunk(25, 25, 3, 0.50, Math.random(), gl);
   }
+  lastTime = new Date().getTime();
 }
 
 /**
@@ -51,15 +57,11 @@ function initWebGL() {
 }
 
 /**
- * Create vertex, texture and normal buffers
+ * Spawns supplied RenderableObject
+ * @param renderableObject
  */
-function initBuffers() {
-  var cube = new RenderableObject(Cube.vertices, Cube.uvs, Cube.normals, Cube.indices, [2,-1, -2], gl);
-  cube.prepareBuffers();
-  renderableObjects.push(cube);
-  var cube2 = new RenderableObject(Cube.vertices, Cube.uvs, Cube.normals, Cube.indices, [-2, -1, -2], gl);
-  cube2.prepareBuffers();
-  renderableObjects.push(cube2);
+function spawnObject(renderableObject) {
+  renderableObjects.push(renderableObject);
 }
 
 /**
@@ -101,7 +103,8 @@ function drawScene() {
   perspectiveMatrix = makePerspective(45, 640.0/480.0, 0.1, 100.0);
 
   loadIdentity();
-  mvTranslate([0.0, 0.0, -6.0]);
+  mvTranslate([0.0, 0.0, -20.0]);
+  mvRotate(cubeRotation, [0.25, 0, 0.2]);
 
   renderableObjects.forEach(function(renderableObject) {
     renderableObject.render();
@@ -116,6 +119,25 @@ function drawScene() {
   }
 
   lastCubeUpdateTime = currentTime;
+  countFPS();
+}
+
+/**
+ * FPS Counter
+ */
+function countFPS() {
+  var now = new Date().getTime();
+
+  frameCount++;
+  elapsedTime += (now - lastTime);
+  lastTime = now;
+  if(elapsedTime >= 1000) {
+    fps = frameCount;
+    frameCount = 0;
+    elapsedTime -= 1000;
+
+    document.getElementById('fps').innerHTML = 'FPS: ' + fps;
+  }
 }
 
 /**

@@ -5,6 +5,7 @@ function RenderableObject (vertices, uv, normals, indices, position, gl) {
   this.indices = indices;
   this.position = position;
   this.gl = gl;
+  this.prepareBuffers();
   return this;
 }
 
@@ -63,4 +64,17 @@ RenderableObject.prototype.render = function () {
 
   this.gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
   mvPopMatrix();
+};
+
+RenderableObject.prototype.copy = function(position) {
+  var copy = new RenderableObject(this.vertices, this.uv, this.normals, this.indices, position, this.gl);
+  copy.verticesBuffer = this.verticesBuffer;
+  copy.normalsBuffer = this.normalsBuffer;
+  copy.uvBuffer = this.uvBuffer;
+  copy.indicesBuffer = this.indicesBuffer;
+  return copy;
+};
+
+RenderableObject.prototype.equals = function(other) {
+  return this.vertices === other.vertices;
 };

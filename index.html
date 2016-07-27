@@ -1,12 +1,14 @@
 <!doctype html>
 <html>
 <head>
-    <title>WebGL Demo</title>
+    <title>Marching Cubes Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script src="libs/sylvester.js" type="text/javascript"></script>
     <script src="libs/glUtils.js" type="text/javascript"></script>
+    <script src="libs/perlin.js" type="text/javascript"></script>
     <script src="RenderableObject.js" type="text/javascript"></script>
+    <script src="Chunk.js" type="text/javascript"></script>
     <script src="Cube.js" type="text/javascript"></script>
     <script src="engine.js" type="text/javascript"></script>
 
@@ -22,7 +24,6 @@
 
         gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
       }
-
     </script>
 
     <!-- Vertex shader program -->
@@ -42,8 +43,6 @@
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
         vTextureCoord = aTextureCoord;
 
-        // Apply lighting effect
-
         highp vec3 ambientLight = vec3(0.6, 0.6, 0.6);
         highp vec3 directionalLightColor = vec3(0.5, 0.5, 0.75);
         highp vec3 directionalVector = vec3(0.85, 0.8, 0.75);
@@ -53,11 +52,27 @@
         highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
         vLighting = ambientLight + (directionalLightColor * directional);
       }
-
     </script>
 </head>
 
 <body onload="start()">
+<div id="menu">
+    <div id="fps">FPS: 0</div>
+    <form>
+        <p>Generation Options</p>
+        <label for="threshold">Threshold</label>
+        <input type="range" id="threshold" value="100">
+        <br>
+        <label for="threshold">Resolution</label>
+        <input type="range" id="resolution" value="100">
+        <br>
+        <label for="threshold">Noise Scale</label>
+        <input type="range" id="noise-scale" value="100">
+        <br>
+        <label for="threshold">Chunk Scale</label>
+        <input type="range" id="chunk-scale" value="100">
+    </form>
+</div>
 <canvas id="glcanvas" width="1280" height="960">
     Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
 </canvas>

@@ -1,41 +1,42 @@
 var Cube = {};
+var size = 0.03;
 
 Cube.vertices = [
   // Front face
-  -1.0, -1.0,  1.0,
-  1.0, -1.0,  1.0,
-  1.0,  1.0,  1.0,
-  -1.0,  1.0,  1.0,
+  -size, -size,  size,
+  size, -size,  size,
+  size,  size,  size,
+  -size,  size,  size,
 
   // Back face
-  -1.0, -1.0, -1.0,
-  -1.0,  1.0, -1.0,
-  1.0,  1.0, -1.0,
-  1.0, -1.0, -1.0,
+  -size, -size, -size,
+  -size,  size, -size,
+  size,  size, -size,
+  size, -size, -size,
 
   // Top face
-  -1.0,  1.0, -1.0,
-  -1.0,  1.0,  1.0,
-  1.0,  1.0,  1.0,
-  1.0,  1.0, -1.0,
+  -size,  size, -size,
+  -size,  size,  size,
+  size,  size,  size,
+  size,  size, -size,
 
   // Bottom face
-  -1.0, -1.0, -1.0,
-  1.0, -1.0, -1.0,
-  1.0, -1.0,  1.0,
-  -1.0, -1.0,  1.0,
+  -size, -size, -size,
+  size, -size, -size,
+  size, -size,  size,
+  -size, -size,  size,
 
   // Right face
-  1.0, -1.0, -1.0,
-  1.0,  1.0, -1.0,
-  1.0,  1.0,  1.0,
-  1.0, -1.0,  1.0,
+  size, -size, -size,
+  size,  size, -size,
+  size,  size,  size,
+  size, -size,  size,
 
   // Left face
-  -1.0, -1.0, -1.0,
-  -1.0, -1.0,  1.0,
-  -1.0,  1.0,  1.0,
-  -1.0,  1.0, -1.0
+  -size, -size, -size,
+  -size, -size,  size,
+  -size,  size,  size,
+  -size,  size, -size
 ];
 
 Cube.uvs = [
