@@ -35,7 +35,7 @@ function start() {
     initTextures();
     setInterval(drawScene, 16.6);
 
-    new Chunk(25, 25, 3, 0.50, Math.random(), gl);
+    new Chunk(25, 10, 3, 0.50, Math.random(), gl);
   }
   lastTime = new Date().getTime();
 }

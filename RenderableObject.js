@@ -5,7 +5,6 @@ function RenderableObject (vertices, uv, normals, indices, position, gl) {
   this.indices = indices;
   this.position = position;
   this.gl = gl;
-  this.prepareBuffers();
   return this;
 }
 

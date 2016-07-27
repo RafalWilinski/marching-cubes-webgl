@@ -30,6 +30,7 @@ Chunk.prototype.generateChunkPoints = function() {
 
 Chunk.prototype.renderPoints = function() {
   var sample = new RenderableObject(Cube.vertices, Cube.uvs, Cube.normals, Cube.indices, [0,0,0], gl);
+  sample.prepareBuffers();
 
   if (this.data.length < this.resolution) {
     console.error('Cannot render Chunk before it\'s generated!');
