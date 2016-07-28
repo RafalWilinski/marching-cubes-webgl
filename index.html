@@ -7,6 +7,7 @@
     <script src="libs/sylvester.js" type="text/javascript"></script>
     <script src="libs/glUtils.js" type="text/javascript"></script>
     <script src="libs/perlin.js" type="text/javascript"></script>
+    <script src="ChunkGenerator.js" type="text/javascript"></script>
     <script src="RenderableObject.js" type="text/javascript"></script>
     <script src="Chunk.js" type="text/javascript"></script>
     <script src="Cube.js" type="text/javascript"></script>
@@ -53,19 +54,26 @@
 <body onload="start()">
 <div id="menu">
     <div id="fps">FPS: 0</div>
-    <form>
-        <p>Generation Options</p>
+    <form name="chunkform">
+        <span>Generation Options</span>
+        <br>
         <label for="threshold">Threshold</label>
-        <input type="range" id="threshold" value="100">
+        <input type="range" id="threshold" value="100" oninput="onThresholdChange(this.value)">
+        <span id="threshold_value"></span>
         <br>
-        <label for="threshold">Resolution</label>
-        <input type="range" id="resolution" value="100">
+        <label for="resolution">Resolution</label>
+        <input type="range" id="resolution" value="100" oninput="onResolutionChange(this.value)">
+        <span id="resolution_value"></span>
         <br>
-        <label for="threshold">Noise Scale</label>
-        <input type="range" id="noise-scale" value="100">
+        <label for="noise-scale">Noise Scale</label>
+        <input type="range" id="noise-scale" value="100" oninput="onNoiseScaleChange(this.value)">
+        <span id="noise-scale_value"></span>
         <br>
-        <label for="threshold">Chunk Scale</label>
-        <input type="range" id="chunk-scale" value="100">
+        <label for="chunk-scale">Chunk Scale</label>
+        <input type="range" id="chunk-scale" value="100" oninput="onChunkScaleChange(this.value)">
+        <span id="chunk-scale_value"></span>
+        <br>
+        <input type="submit" value="Generate">
     </form>
 </div>
 <canvas id="glcanvas" width="1280" height="960">

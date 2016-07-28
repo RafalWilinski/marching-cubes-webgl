@@ -35,7 +35,7 @@ function start() {
     initTextures();
     setInterval(drawScene, 16.6);
 
-    new Chunk(25, 10, 3, 0.50, Math.random(), gl);
+    new Chunk(25, 0.1, 0.3, 0.50, Math.random(), gl);
   }
   lastTime = new Date().getTime();
 }
@@ -62,6 +62,13 @@ function initWebGL() {
  */
 function spawnObject(renderableObject) {
   renderableObjects.push(renderableObject);
+}
+
+/**
+ * Removes all renderable objects from scene
+ */
+function removeAllObjects() {
+  renderableObjects = [];
 }
 
 /**
@@ -104,7 +111,7 @@ function drawScene() {
 
   loadIdentity();
   mvTranslate([0.0, 0.0, -20.0]);
-  mvRotate(cubeRotation, [0.25, 0, 0.2]);
+  mvRotate(cubeRotation, [0, 0.2, 0]);
 
   renderableObjects.forEach(function(renderableObject) {
     renderableObject.render();

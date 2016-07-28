@@ -17,7 +17,7 @@ Chunk.prototype.generateChunkPoints = function() {
     for (var y = 0; y < this.resolution; y++) {
       this.data[x][y] = [];
       for (var z = 0; z < this.resolution; z++) {
-        var value = noise.simplex3(x / this.noiseScale, y / this.noiseScale, z / this.noiseScale);
+        var value = noise.simplex3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale);
         if (value > this.threshold) {
           this.data[x][y][z] = 1;
         } else {
@@ -39,8 +39,11 @@ Chunk.prototype.renderPoints = function() {
       for (var y = 0; y < this.resolution; y++) {
         for (var z = 0; z < this.resolution; z++) {
           if (this.data[x][y][z] === 1) {
-            console.log('Spawning at: ' + x + ',' + y + ',' + z);
-            spawnObject(sample.copy([x / this.chunkScale, y / this.chunkScale, z / this.chunkScale]));
+            spawnObject(sample.copy([
+              x * this.chunkScale - this.chunkScale * this.resolution / 2,
+              y * this.chunkScale - this.chunkScale * this.resolution / 2,
+              z * this.chunkScale - this.chunkScale * this.resolution / 2
+            ]));
           }
         }
       }
