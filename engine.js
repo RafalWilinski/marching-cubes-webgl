@@ -143,7 +143,8 @@ function countFPS() {
     frameCount = 0;
     elapsedTime -= 1000;
 
-    document.getElementById('fps').innerHTML = 'FPS: ' + fps;
+    document.getElementById('renderable-points').textContent = 'Renderable points: ' + renderableObjects.length;
+    document.getElementById('fps').textContent = 'FPS: ' + fps;
   }
 }
 
