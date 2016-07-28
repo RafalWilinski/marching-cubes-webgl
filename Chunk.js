@@ -3,7 +3,6 @@ function Chunk(resolution, noiseScale, chunkScale, threshold, seed, gl) {
   this.noiseScale = noiseScale;
   this.chunkScale = chunkScale;
   this.data = [];
-  this.gridCells = [];
   this.threshold = threshold;
   this.gl = gl;
   noise.seed(seed);
@@ -20,7 +19,7 @@ Chunk.prototype.generateChunkPoints = function () {
       for (var z = 0; z < this.resolution; z++) {
         var value = noise.simplex3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale);
         if (value > this.threshold) {
-          this.data[x][y][z] = 1;
+          this.data[x][y][z] = 5;
         } else {
           this.data[x][y][z] = 0;
         }
@@ -30,8 +29,8 @@ Chunk.prototype.generateChunkPoints = function () {
 };
 
 Chunk.prototype.renderPoints = function () {
-  var sample = new RenderableObject(Cube.vertices, Cube.uvs, Cube.normals, Cube.indices, [0, 0, 0], gl);
-  sample.prepareBuffers();
+  this.sample = new RenderableObject(Cube.vertices, Cube.uvs, Cube.normals, Cube.indices, [0, 0, 0], gl);
+  this.sample.prepareBuffers();
 
   if (this.data.length < this.resolution) {
     console.error('Cannot render Chunk before it\'s generated!');
@@ -39,8 +38,8 @@ Chunk.prototype.renderPoints = function () {
     for (var x = 0; x < this.resolution; x++) {
       for (var y = 0; y < this.resolution; y++) {
         for (var z = 0; z < this.resolution; z++) {
-          if (this.data[x][y][z] === 1) {
-            spawnObject(sample.copy([
+          if (this.data[x][y][z] > 0) {
+            spawnObject(this.sample.copy([
               x * this.chunkScale - this.chunkScale * this.resolution / 2,
               y * this.chunkScale - this.chunkScale * this.resolution / 2,
               z * this.chunkScale - this.chunkScale * this.resolution / 2
@@ -51,24 +50,64 @@ Chunk.prototype.renderPoints = function () {
     }
 
     console.log('Chunk spawned!');
-
-    this.polygonise(0.01);
+    this.polygonise(Math.random() % 100);
   }
 };
 
 Chunk.prototype.polygonise = function (isoLevel) {
-  var tris = [];
+  var mesh = [];
 
   for (var x = 0; x < this.resolution - 1; x++) {
     for (var y = 0; y < this.resolution - 1; y++) {
       for (var z = 0; z < this.resolution - 1; z++) {
-        var newTris = this.polygonisePoint(x, y, z, isoLevel);
-        if (newTris) tris = tris.concat(this.polygonisePoint(x, y, z, isoLevel));
+        var part = this.polygonisePoint(x, y, z, isoLevel);
+        if (part) mesh = mesh.concat(part);
       }
     }
   }
 
-  console.log(tris);
+  var indices = [];
+  var vertices = [];
+  var uvs = [];
+  var normals = [];
+
+  mesh.forEach(function(triangleArray, index) {
+    triangleArray.forEach(function(point, pointIndex) {
+      vertices.push(point.x);
+      vertices.push(point.y);
+      vertices.push(point.z);
+
+      indices.push(index * 3 + pointIndex);
+
+      for(var j = 0; j < 3; j++)
+        normals = normals.concat(calculateNormal(triangleArray));
+    });
+  });
+
+  for(var i = 0; i < indices.length; i++) {
+    if (i % 4 === 0) {
+      uvs.push(0.0);
+      uvs.push(0.0);
+    } else if (i % 4 === 1) {
+      uvs.push(0.0);
+      uvs.push(1.0);
+    } else if (i % 4 === 2) {
+      uvs.push(1.0);
+      uvs.push(1.0);
+    } else if (i % 4 === 3) {
+      uvs.push(1.0);
+      uvs.push(0.0);
+    }
+  }
+
+  console.log('Marching cube generated. Vertices: ' + vertices.length / 3
+    + ', indices: ' + indices.length
+    + ', uvs: ' + uvs.length
+    + ', normals: ' + normals.length / 3);
+
+  var chunk = new RenderableObject(vertices, uvs, normals, indices, [0,0,0], gl);
+  chunk.prepareBuffers();
+  spawnObject(chunk);
 };
 
 Chunk.prototype.polygonisePoint = function (x, y, z, isoLevel) {
@@ -184,7 +223,6 @@ Chunk.prototype.polygonisePoint = function (x, y, z, isoLevel) {
     ntriang++;
   }
 
-  console.log(triangles);
   return triangles;
 };
 
@@ -203,10 +241,10 @@ Chunk.prototype.vertexInterpolation = function (isoLevel, p1, p2, valp1, valp2) 
   return (p);
 };
 
-Chunk.prototype.getPosition = function (x, y, z) {
+Chunk.prototype.getPosition = function (xPos, yPos, zPos) {
   return {
-    x: x * this.chunkScale - this.chunkScale * this.resolution / 2,
-    y: y * this.chunkScale - this.chunkScale * this.resolution / 2,
-    z: z * this.chunkScale - this.chunkScale * this.resolution / 2
-  }
+    x: xPos * this.chunkScale - ((this.chunkScale * this.resolution) / 2),
+    y: yPos * this.chunkScale - ((this.chunkScale * this.resolution) / 2),
+    z: zPos * this.chunkScale - ((this.chunkScale * this.resolution) / 2)
+  };
 };

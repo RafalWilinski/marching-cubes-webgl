@@ -109,7 +109,7 @@ function drawScene() {
 
   loadIdentity();
   mvTranslate([0.0, 0.0, -20.0]);
-  mvRotate(cubeRotation, [0, 0.2, 0]);
+  mvRotate(cubeRotation, [0.3, 0.2, 0.4]);
 
   renderableObjects.forEach(function(renderableObject) {
     renderableObject.render();
@@ -255,6 +255,25 @@ function mvPushMatrix(m) {
   } else {
     mvMatrixStack.push(mvMatrix.dup());
   }
+}
+
+function calculateNormal(triangle) {
+  var u = {};
+  u.x = triangle[1].x - triangle[0].x;
+  u.y = triangle[1].y - triangle[0].y;
+  u.z = triangle[1].z - triangle[0].z;
+
+  var v = {};
+  v.x = triangle[2].x - triangle[1].x;
+  v.y = triangle[2].y - triangle[1].y;
+  v.z = triangle[2].z - triangle[1].z;
+
+  var normal = [];
+  normal[0] = (u.y * v.z) - (u.z * v.y);
+  normal[1] = (u.z * v.x) - (u.x * v.z);
+  normal[2] = (u.x * v.y) - (u.y * v.x);
+
+  return normal;
 }
 
 function mvPopMatrix() {
