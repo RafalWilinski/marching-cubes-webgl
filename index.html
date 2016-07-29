@@ -8,7 +8,6 @@
     <script src="libs/glUtils.js" type="text/javascript"></script>
     <script src="libs/perlin.js" type="text/javascript"></script>
     <script src="MarchingCubesConst.js" type="text/javascript"></script>
-    <script src="ChunkGenerator.js" type="text/javascript"></script>
     <script src="RenderableObject.js" type="text/javascript"></script>
     <script src="Chunk.js" type="text/javascript"></script>
     <script src="Cube.js" type="text/javascript"></script>
@@ -60,27 +59,32 @@
     <form name="chunkform">
         <span>Generation Options</span>
         <br>
-        <label for="threshold">Threshold</label>
-        <input type="range" id="threshold" value="100" oninput="onThresholdChange(this.value)">
-        <span id="threshold_value"></span>
+        <label for="threshold">Threshold</label> - <span id="threshold_value"></span>
+        <input class="slider" type="range" id="threshold" value="100" oninput="onThresholdChange(this.value)">
         <br>
-        <label for="resolution">Resolution</label>
-        <input type="range" id="resolution" value="100" oninput="onResolutionChange(this.value)">
-        <span id="resolution_value"></span>
+        <label for="resolution">Resolution</label> - <span id="resolution_value"></span>
+        <input class="slider" type="range" id="resolution" value="100" oninput="onResolutionChange(this.value)">
         <br>
-        <label for="noise-scale">Noise Scale</label>
-        <input type="range" id="noise-scale" value="100" oninput="onNoiseScaleChange(this.value)">
-        <span id="noise-scale_value"></span>
+        <label for="noise-scale">Noise Scale</label> - <span id="noise-scale_value"></span>
+        <input class="slider" type="range" id="noise-scale" value="100" oninput="onNoiseScaleChange(this.value)">
         <br>
-        <label for="chunk-scale">Chunk Scale</label>
-        <input type="range" id="chunk-scale" value="100" oninput="onChunkScaleChange(this.value)">
-        <span id="chunk-scale_value"></span>
+        <label for="chunk-scale">Chunk Scale</label> - <span id="chunk-scale_value"></span>
+        <input class="slider" type="range" id="chunk-scale" value="100" oninput="onChunkScaleChange(this.value)">
         <br>
+        <label for="isovalue">Isolevel</label> - <span id="isolevel-value"></span>
+        <input class="slider" type="range" id="isovalue" value="100" oninput="onIsolevelChange(this.value)">
+        <br>
+        <label for="pointvalue">Points scalar value</label> - <span id="pointlevel-value"></span>
+        <input class="slider" type="range" id="pointvalue" value="100" oninput="onPointValueChange(this.value)">
+        <br>
+        <label for="render-points">Debug vertices?</label>
+        <input type="checkbox" id="render-points">
         <input type="submit" value="Generate">
     </form>
 </div>
 <canvas id="glcanvas" width="1280" height="960">
     Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
 </canvas>
+<script src="ChunkGenerator.js" type="text/javascript"></script>
 </body>
 </html>

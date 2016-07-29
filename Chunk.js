@@ -1,14 +1,15 @@
-function Chunk(resolution, noiseScale, chunkScale, threshold, seed, gl) {
+function Chunk(resolution, noiseScale, chunkScale, threshold, isolevel, pointValues, seed, gl) {
   this.resolution = resolution;
   this.noiseScale = noiseScale;
   this.chunkScale = chunkScale;
   this.data = [];
   this.threshold = threshold;
+  this.isolevel = isolevel;
+  this.pointValues = pointValues;
   this.gl = gl;
   noise.seed(seed);
 
   this.generateChunkPoints();
-  this.renderPoints();
 }
 
 Chunk.prototype.generateChunkPoints = function () {
@@ -19,7 +20,7 @@ Chunk.prototype.generateChunkPoints = function () {
       for (var z = 0; z < this.resolution; z++) {
         var value = noise.simplex3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale);
         if (value > this.threshold) {
-          this.data[x][y][z] = 5;
+          this.data[x][y][z] = 50;
         } else {
           this.data[x][y][z] = 0;
         }
@@ -48,9 +49,6 @@ Chunk.prototype.renderPoints = function () {
         }
       }
     }
-
-    console.log('Chunk spawned!');
-    this.polygonise(Math.random() % 100);
   }
 };
 
