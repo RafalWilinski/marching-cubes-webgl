@@ -71,12 +71,14 @@
         <label for="chunk-scale">Chunk Scale</label> - <span id="chunk-scale_value"></span>
         <input class="slider" type="range" id="chunk-scale" value="100" oninput="onChunkScaleChange(this.value)">
         <br>
-        <label for="isovalue">Isolevel</label> - <span id="isolevel-value"></span>
+        <label for="isovalue">Isolevel</label> - <span id="isolevel_value"></span>
         <input class="slider" type="range" id="isovalue" value="100" oninput="onIsolevelChange(this.value)">
         <br>
-        <label for="pointvalue">Points scalar value</label> - <span id="pointlevel-value"></span>
+        <label for="pointvalue">Points scalar value</label> - <span id="pointlevel_value"></span>
         <input class="slider" type="range" id="pointvalue" value="100" oninput="onPointValueChange(this.value)">
         <br>
+        <label for="seed">Seed</label>
+        <input type="text" id="seed" onchange="onSeedChange(this.value)">
         <label for="render-points">Debug vertices?</label>
         <input type="checkbox" id="render-points">
         <input type="submit" value="Generate">

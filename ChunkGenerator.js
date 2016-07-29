@@ -5,6 +5,7 @@ var chunkScaleValue;
 var isolevelValue;
 var pointValue;
 var chunk;
+var seed;
 
 window.addEventListener('load', function() {
   thresholdValue = document.getElementById('threshold_value');
@@ -12,13 +13,14 @@ window.addEventListener('load', function() {
   noiseScaleValue = document.getElementById('noise-scale_value');
   chunkScaleValue = document.getElementById('chunk-scale_value');
   isolevelValue = document.getElementById('isolevel_value');
-  pointValue = document.getElementById('pointvalue_value');
+  pointValue = document.getElementById('pointlevel_value');
 
   onThresholdChange(50);
   onResolutionChange(10);
   onNoiseScaleChange(10);
   onChunkScaleChange(20);
-  isolevelValue(50);
+  onIsolevelChange(50);
+  onPointValueChange(75);
 
   document.chunkform.onsubmit = function() {
     removeAllObjects();
@@ -29,10 +31,12 @@ window.addEventListener('load', function() {
       parseFloat(chunkScaleValue.textContent),
       parseFloat(thresholdValue.textContent),
       parseFloat(isolevelValue.textContent),
-
-      Math.random(),
+      parseFloat(pointValue.textContent),
+      seed,
       gl
     );
+
+    chunk.polygonise(parseFloat(isolevelValue.textContent));
 
     return false;
   };
@@ -62,3 +66,12 @@ const onPointValueChange = function(value) {
   pointValue.textContent = value / 100;
 };
 
+const onSeedChange = function(value) {
+  var sum = 0;
+  for (var i = 0; i < value.length; i++) {
+    sum += value.charCodeAt(i);
+  }
+
+  seed = sum % 100000000;
+  console.log('Seed: ' + seed);
+};

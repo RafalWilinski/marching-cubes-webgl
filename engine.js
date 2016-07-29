@@ -109,7 +109,7 @@ function drawScene() {
 
   loadIdentity();
   mvTranslate([0.0, 0.0, -20.0]);
-  mvRotate(cubeRotation, [0.3, 0.2, 0.4]);
+  mvRotate(cubeRotation, [0.0, 0.2, 0.0]);
 
   renderableObjects.forEach(function(renderableObject) {
     renderableObject.render();

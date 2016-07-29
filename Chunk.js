@@ -20,7 +20,7 @@ Chunk.prototype.generateChunkPoints = function () {
       for (var z = 0; z < this.resolution; z++) {
         var value = noise.simplex3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale);
         if (value > this.threshold) {
-          this.data[x][y][z] = 50;
+          this.data[x][y][z] = this.pointValues;
         } else {
           this.data[x][y][z] = 0;
         }
@@ -64,25 +64,30 @@ Chunk.prototype.polygonise = function (isoLevel) {
     }
   }
 
-  var indices = [];
-  var vertices = [];
+  var indices = new Array(3 * mesh.length);
+  var indicesIndex = 0;
+  var vertices = new Array(3 * 3 * mesh.length);
+  var vertexIndex = 0;
   var uvs = [];
   var normals = [];
+  var i = 0;
 
-  mesh.forEach(function(triangleArray, index) {
-    triangleArray.forEach(function(point, pointIndex) {
-      vertices.push(point.x);
-      vertices.push(point.y);
-      vertices.push(point.z);
+  for (var submeshIndex = 0; submeshIndex < mesh.length; submeshIndex++) {
+    for (var pointIndex = 0; pointIndex < mesh[submeshIndex].length; pointIndex++) {
+      vertices[vertexIndex] = mesh[submeshIndex][pointIndex].x;
+      vertices[vertexIndex + 1] = mesh[submeshIndex][pointIndex].y;
+      vertices[vertexIndex + 2] = mesh[submeshIndex][pointIndex].z;
+      vertexIndex += 3;
 
-      indices.push(index * 3 + pointIndex);
+      indices[indicesIndex] = (submeshIndex * 3 + pointIndex);
+      indicesIndex++;
 
-      for(var j = 0; j < 3; j++)
-        normals = normals.concat(calculateNormal(triangleArray));
-    });
-  });
+      for(i = 0; i < 3; i++)
+        normals = normals.concat(calculateNormal(mesh[submeshIndex]));
+    }
+  }
 
-  for(var i = 0; i < indices.length; i++) {
+  for(i = 0; i < indices.length; i++) {
     if (i % 4 === 0) {
       uvs.push(0.0);
       uvs.push(0.0);
