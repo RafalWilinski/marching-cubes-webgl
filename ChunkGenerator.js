@@ -6,6 +6,8 @@ var isolevelValue;
 var pointValue;
 var chunk;
 var seed;
+var noiseAlg;
+var debugPoints = false;
 
 window.addEventListener('load', function() {
   thresholdValue = document.getElementById('threshold_value');
@@ -30,10 +32,11 @@ window.addEventListener('load', function() {
       parseFloat(noiseScaleValue.textContent),
       parseFloat(chunkScaleValue.textContent),
       parseFloat(thresholdValue.textContent),
-      parseFloat(isolevelValue.textContent),
       parseFloat(pointValue.textContent),
       seed,
-      gl
+      debugPoints,
+      gl,
+      noiseAlg
     );
 
     chunk.polygonise(parseFloat(isolevelValue.textContent));
@@ -74,4 +77,12 @@ const onSeedChange = function(value) {
 
   seed = sum % 100000000;
   console.log('Seed: ' + seed);
+};
+
+const onDebugVerticesChange = function() {
+  debugPoints = !debugPoints;
+};
+
+const onNoiseAlgorithmChange = function (value) {
+  noiseAlg = value;
 };

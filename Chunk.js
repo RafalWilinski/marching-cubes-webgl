@@ -1,15 +1,18 @@
-function Chunk(resolution, noiseScale, chunkScale, threshold, isolevel, pointValues, seed, gl) {
+function Chunk(resolution, noiseScale, chunkScale, threshold, pointValues, seed, debugVertices, gl, noiseAlg) {
   this.resolution = resolution;
   this.noiseScale = noiseScale;
   this.chunkScale = chunkScale;
   this.data = [];
   this.threshold = threshold;
-  this.isolevel = isolevel;
   this.pointValues = pointValues;
   this.gl = gl;
+  this.noiseAlg = noiseAlg;
   noise.seed(seed);
 
   this.generateChunkPoints();
+  if (debugVertices) {
+    this.renderPoints();
+  }
 }
 
 Chunk.prototype.generateChunkPoints = function () {
@@ -18,7 +21,10 @@ Chunk.prototype.generateChunkPoints = function () {
     for (var y = 0; y < this.resolution; y++) {
       this.data[x][y] = [];
       for (var z = 0; z < this.resolution; z++) {
-        var value = noise.simplex3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale);
+        var value = this.noiseAlg === 'simplex'
+          ? noise.simplex3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale)
+          : noise.perlin3(x * this.noiseScale, y * this.noiseScale, z * this.noiseScale);
+
         if (value > this.threshold) {
           this.data[x][y][z] = this.pointValues;
         } else {

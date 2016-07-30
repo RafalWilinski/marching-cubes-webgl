@@ -4,6 +4,8 @@ var fps;
 var elapsedTime = 0;
 var frameCount = 0;
 var lastTime = 0;
+var totalVerticesCount = 0;
+var totalTrianglesCount = 0;
 
 var cubeRotation = 0.0;
 var lastCubeUpdateTime = 0;
@@ -60,6 +62,8 @@ function initWebGL() {
  */
 function spawnObject(renderableObject) {
   renderableObjects.push(renderableObject);
+  totalVerticesCount += renderableObject.vertices.length / 3;
+  totalTrianglesCount += renderableObject.vertices.length / 9;
 }
 
 /**
@@ -67,6 +71,8 @@ function spawnObject(renderableObject) {
  */
 function removeAllObjects() {
   renderableObjects = [];
+  totalTrianglesCount = 0;
+  totalVerticesCount = 0;
 }
 
 /**
@@ -143,6 +149,8 @@ function countFPS() {
 
     document.getElementById('renderable-points').textContent = 'Renderable points: ' + renderableObjects.length;
     document.getElementById('fps').textContent = 'FPS: ' + fps;
+    document.getElementById('vertices').textContent = 'Vertices: ' + totalVerticesCount;
+    document.getElementById('triangles').textContent = 'Triangles: ' + totalTrianglesCount;
   }
 }
 

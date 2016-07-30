@@ -54,7 +54,9 @@
 <body onload="start()">
 <div id="menu">
     <div id="fps">FPS: 0</div>
-    <div id="renderable-points">Renderable points: 0</div>
+    <div id="renderable-points">Renderable Objects: 0</div>
+    <div id="vertices">Vertices: 0</div>
+    <div id="triangles">Triangles: 0</div>
     <br>
     <form name="chunkform">
         <span>Generation Options</span>
@@ -80,7 +82,13 @@
         <label for="seed">Seed</label>
         <input type="text" id="seed" onchange="onSeedChange(this.value)">
         <label for="render-points">Debug vertices?</label>
-        <input type="checkbox" id="render-points">
+        <input type="checkbox" id="render-points" onchange="onDebugVerticesChange()">
+        <br>
+        <label for="noise-method">Noise Algorithm</label>
+        <select id="noise-method" onchange="onNoiseAlgorithmChange(this.value)">
+            <option value="perlin">Perlin</option>
+            <option value="simplex">Simplex</option>
+        </select>
         <input type="submit" value="Generate">
     </form>
 </div>
