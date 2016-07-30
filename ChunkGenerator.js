@@ -8,6 +8,24 @@ var chunk;
 var seed;
 var noiseAlg;
 var debugPoints = false;
+var hotreload = false;
+
+const buildChunk = function() {
+  removeAllObjects();
+  chunk = new Chunk(
+    parseInt(resolutionValue.textContent),
+    parseFloat(noiseScaleValue.textContent),
+    parseFloat(chunkScaleValue.textContent),
+    parseFloat(thresholdValue.textContent),
+    parseFloat(pointValue.textContent),
+    seed,
+    debugPoints,
+    gl,
+    noiseAlg
+  );
+
+  chunk.polygonise(parseFloat(isolevelValue.textContent));
+};
 
 window.addEventListener('load', function() {
   thresholdValue = document.getElementById('threshold_value');
@@ -25,48 +43,39 @@ window.addEventListener('load', function() {
   onPointValueChange(75);
 
   document.chunkform.onsubmit = function() {
-    removeAllObjects();
-
-    chunk = new Chunk(
-      parseInt(resolutionValue.textContent),
-      parseFloat(noiseScaleValue.textContent),
-      parseFloat(chunkScaleValue.textContent),
-      parseFloat(thresholdValue.textContent),
-      parseFloat(pointValue.textContent),
-      seed,
-      debugPoints,
-      gl,
-      noiseAlg
-    );
-
-    chunk.polygonise(parseFloat(isolevelValue.textContent));
-
+    buildChunk();
     return false;
   };
 });
 
 const onThresholdChange = function(value) {
   thresholdValue.textContent = value / 100;
+  if (hotreload) buildChunk();
 };
 
 const onResolutionChange = function(value) {
   resolutionValue.textContent = value;
+  if (hotreload) buildChunk();
 };
 
 const onNoiseScaleChange = function(value) {
   noiseScaleValue.textContent = value / 100;
+  if (hotreload) buildChunk();
 };
 
 const onChunkScaleChange = function(value) {
   chunkScaleValue.textContent = value / 20;
+  if (hotreload) buildChunk();
 };
 
 const onIsolevelChange = function(value) {
   isolevelValue.textContent = value / 100;
+  if (hotreload) buildChunk();
 };
 
 const onPointValueChange = function(value) {
   pointValue.textContent = value / 100;
+  if (hotreload) buildChunk();
 };
 
 const onSeedChange = function(value) {
@@ -85,4 +94,8 @@ const onDebugVerticesChange = function() {
 
 const onNoiseAlgorithmChange = function (value) {
   noiseAlg = value;
+};
+
+const onHotReloadChange = function () {
+  hotreload = !hotreload;
 };
