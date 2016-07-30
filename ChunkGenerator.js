@@ -36,7 +36,7 @@ window.addEventListener('load', function() {
   pointValue = document.getElementById('pointlevel_value');
 
   onThresholdChange(50);
-  onResolutionChange(10);
+  onResolutionChange(20);
   onNoiseScaleChange(10);
   onChunkScaleChange(20);
   onIsolevelChange(50);
@@ -54,7 +54,7 @@ const onThresholdChange = function(value) {
 };
 
 const onResolutionChange = function(value) {
-  resolutionValue.textContent = value;
+  resolutionValue.textContent = parseInt(value / 2);
   if (hotreload) buildChunk();
 };
 
