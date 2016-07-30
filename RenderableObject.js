@@ -69,7 +69,3 @@ RenderableObject.prototype.copy = function(position) {
   copy.indicesBuffer = this.indicesBuffer;
   return copy;
 };
-
-RenderableObject.prototype.equals = function(other) {
-  return this.vertices === other.vertices;
-};
