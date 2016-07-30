@@ -58,7 +58,7 @@ Chunk.prototype.renderPoints = function () {
   }
 };
 
-Chunk.prototype.polygonise = function (isoLevel) {
+Chunk.prototype.prepareMesh = function (isoLevel) {
   var mesh = [];
 
   for (var x = 0; x < this.resolution - 1; x++) {
@@ -70,12 +70,19 @@ Chunk.prototype.polygonise = function (isoLevel) {
     }
   }
 
+  return mesh;
+};
+
+Chunk.prototype.polygonise = function (isoLevel) {
+  var mesh = this.prepareMesh(isoLevel);
+
   var indices = new Array(3 * mesh.length);
   var indicesIndex = 0;
   var vertices = new Array(3 * 3 * mesh.length);
   var vertexIndex = 0;
   var uvs = [];
-  var normals = [];
+  var normals = new Array(3 * 3 * mesh.length);
+  var normalIndex = 0;
   var i = 0;
 
   for (var submeshIndex = 0; submeshIndex < mesh.length; submeshIndex++) {
@@ -88,8 +95,12 @@ Chunk.prototype.polygonise = function (isoLevel) {
       indices[indicesIndex] = (submeshIndex * 3 + pointIndex);
       indicesIndex++;
 
-      for(i = 0; i < 3; i++)
-        normals = normals.concat(calculateNormal(mesh[submeshIndex]));
+      var normal = calculateNormal(mesh[submeshIndex]);
+      for(i = 0; i < 3; i++) {
+        normals[normalIndex + i] = normal[i];
+      }
+
+      normalIndex += 3;
     }
   }
 
